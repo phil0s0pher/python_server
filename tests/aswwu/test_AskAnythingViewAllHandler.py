@@ -12,9 +12,9 @@ import sqlite3
 
 @pytest.fixture()
 def test_db():
-    data = [(1, "2016-01-01 10:20:05.123", "Somthing", True, True),
-            (2, "2016-01-01 10:20:05.124", "Somthing Else", True, True),
-            (3, "2016-01-01 10:20:05.125", "Somthing More", True, True)]
+    data = [(1, "2016-01-01 10:20:05.123", "Something", True, True),
+            (2, "2016-01-01 10:20:05.124", "Something Else", True, True),
+            (3, "2016-01-01 10:20:05.125", "Something More", True, True)]
 
     conn = sqlite3.connect(
         '/home/charlie/School/Fall_2017/Software_Testing/labs/python_server/databases/people.db'
@@ -29,16 +29,16 @@ def test_db():
 
 @pytest.fixture()
 def test_db_with_votes():
-    data = [(1, "2016-01-01 10:20:05.123", "Somthing", True, True),
-            (2, "2016-01-01 10:20:05.124", "Somthing Else", True, True),
-            (3, "2016-01-01 10:20:05.125", "Somthing More", True, True)]
+    data = [(1, "2016-01-01 10:20:05.123", "Something", True, True),
+            (2, "2016-01-01 10:20:05.124", "Something Else", True, True),
+            (3, "2016-01-01 10:20:05.125", "Something More", True, True)]
 
     data2 = [(1, "2016-01-01 10:20:05.126", 1, "ryan.rabello"),
              (2, "2016-01-01 10:20:05.127", 2, "ryan.rabello"),
              (3, "2016-01-01 10:20:05.128", 3, "ryan.rabello")]
 
     conn = sqlite3.connect(
-        '/home/charlie/School/Fall_2017/Software_Testing/labs/python_server/databases/people.db'
+        'databases/people.db'
     )
     with conn:
         conn.executemany('INSERT INTO askanythings VALUES (?,?,?,?,?)', data)
@@ -69,21 +69,21 @@ def test_Data(testing_server, test_db):
     expected_data = [{
         u"votes": 0,
         u"reviewed": True,
-        u"question": u"Somthing",
+        u"question": u"Something",
         u"authorized": True,
         u"has_voted": False,
         u"question_id": u"1",
     }, {
         u"votes": 0,
         u"reviewed": True,
-        u"question": u"Somthing Else",
+        u"question": u"Something Else",
         u"authorized": True,
         u"has_voted": False,
         u"question_id": u"2",
     }, {
         u"votes": 0,
         u"reviewed": True,
-        u"question": u"Somthing More",
+        u"question": u"Something More",
         u"authorized": True,
         u"has_voted": False,
         u"question_id": u"3",
@@ -99,21 +99,21 @@ def test_Data_with_votes(testing_server, test_db_with_votes):
     expected_data = [{
         u"votes": 1,
         u"reviewed": True,
-        u"question": u"Somthing",
+        u"question": u"Something",
         u"authorized": True,
         u"has_voted": True,
         u"question_id": u"1",
     }, {
         u"votes": 1,
         u"reviewed": True,
-        u"question": u"Somthing Else",
+        u"question": u"Something Else",
         u"authorized": True,
         u"has_voted": True,
         u"question_id": u"2",
     }, {
         u"votes": 1,
         u"reviewed": True,
-        u"question": u"Somthing More",
+        u"question": u"Something More",
         u"authorized": True,
         u"has_voted": True,
         u"question_id": u"3",
