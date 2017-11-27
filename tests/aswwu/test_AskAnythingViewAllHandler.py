@@ -17,7 +17,7 @@ def test_db():
             (3, "2016-01-01 10:20:05.125", "Something More", True, True)]
 
     conn = sqlite3.connect(
-        '/home/charlie/School/Fall_2017/Software_Testing/labs/python_server/databases/people.db'
+        'databases/people.db'
     )
     with conn:
         conn.executemany('INSERT INTO askanythings VALUES (?,?,?,?,?)', data)

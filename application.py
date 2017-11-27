@@ -94,7 +94,6 @@ def start_server(tornado, io_loop):
     global server
     server = tornado.httpserver.HTTPServer(application)
     server.listen(options.port)
-    # application.listen(options.port)
     # tell it to autoreload if anything changes
     tornado.autoreload.start()
     io_loop.start()
