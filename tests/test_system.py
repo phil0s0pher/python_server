@@ -21,6 +21,7 @@ def start_testing_server():
     tornado.options.parse_config_file("src/aswwu/"+conf_name+".conf")
 
     # create thread for running the server
+    global thread
     thread = threading.Thread(target=application.start_server, args=(tornado, io_loop))
     thread.daemon = True
     thread.start()
@@ -32,6 +33,7 @@ def start_testing_server():
 
 def stop_testing_server():
     application.stop_server(io_loop)
+    thread.join()
 
 class test_system(unittest.TestCase):
     @classmethod
