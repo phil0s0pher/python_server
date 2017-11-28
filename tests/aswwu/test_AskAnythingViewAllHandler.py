@@ -9,16 +9,13 @@ from tornado.options import define
 import sqlite3
 
 
-
 @pytest.fixture()
 def test_db():
     data = [(1, "2016-01-01 10:20:05.123", "Something", True, True),
             (2, "2016-01-01 10:20:05.124", "Something Else", True, True),
             (3, "2016-01-01 10:20:05.125", "Something More", True, True)]
 
-    conn = sqlite3.connect(
-        'databases/people.db'
-    )
+    conn = sqlite3.connect('databases/people.db', check_same_thread=False)
     with conn:
         conn.executemany('INSERT INTO askanythings VALUES (?,?,?,?,?)', data)
     yield
@@ -37,14 +34,13 @@ def test_db_with_votes():
              (2, "2016-01-01 10:20:05.127", 2, "ryan.rabello"),
              (3, "2016-01-01 10:20:05.128", 3, "ryan.rabello")]
 
-    conn = sqlite3.connect(
-        'databases/people.db'
-    )
+    conn = sqlite3.connect('databases/people.db', check_same_thread=False)
     with conn:
         conn.executemany('INSERT INTO askanythings VALUES (?,?,?,?,?)', data)
 
     with conn:
-        conn.executemany('INSERT INTO askanythingvotes VALUES (?,?,?,?)', data2)
+        conn.executemany('INSERT INTO askanythingvotes VALUES (?,?,?,?)',
+                         data2)
 
     yield
     with conn:
