@@ -1,11 +1,6 @@
 import pytest
 import requests
 import json
-
-import threading
-
-import tornado.ioloop
-from tornado.options import define
 import sqlite3
 
 
