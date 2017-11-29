@@ -2,6 +2,9 @@ import pytest
 import requests
 import json
 import sqlite3
+from sqlalchemy import create_engine
+from tests.utils import askanything
+from contextlib import contextmanager
 
 
 @pytest.fixture()
@@ -56,7 +59,27 @@ def test_No_Data(testing_server):
     assert (json.loads(resp.text) == expected_data)
 
 
-def test_Data(testing_server, test_db):
+def test_Data(testing_server, peopledb_conn):
+    data = [{
+        "id": 1,
+        "updated_at": "2016-01-01 10:20:05.123",
+        "question": "Something",
+        "reviewed": True,
+        "authorized": True
+    }, {
+        "id": 2,
+        "updated_at": "2016-01-01 10:20:05.124",
+        "question": "Something Else",
+        "reviewed": True,
+        "authorized": True
+    }, {
+        "id": 3,
+        "updated_at": "2016-01-01 10:20:05.125",
+        "question": "Something More",
+        "reviewed": True,
+        "authorized": True
+    }]
+
     expected_data = [{
         u"votes": 0,
         u"reviewed": True,
@@ -80,10 +103,12 @@ def test_Data(testing_server, test_db):
         u"question_id": u"3",
     }]
 
-    url = "http://127.0.0.1:8888/askanything/view"
-    resp = requests.get(url)
-    assert (resp.status_code == 200)
-    assert (json.loads(resp.text) == expected_data)
+    with askanything(peopledb_conn, data):
+
+        url = "http://127.0.0.1:8888/askanything/view"
+        resp = requests.get(url)
+        assert (resp.status_code == 200)
+        assert (json.loads(resp.text) == expected_data)
 
 
 def test_Data_with_votes(testing_server, test_db_with_votes):
