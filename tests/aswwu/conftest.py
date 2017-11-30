@@ -1,8 +1,10 @@
 import pytest
+
 import threading
+
 import tornado.ioloop
+from tornado.options import define
 import application
-from sqlalchemy import create_engine
 
 
 def start_testing_server():
@@ -22,12 +24,12 @@ def start_testing_server():
     # allow server to start before running tests
     import time
     time.sleep(1)
+    print('starting services...')
     return (io_loop, thread)
 
 
 def stop_testing_server(io_loop, thread):
     application.stop_server(io_loop)
-    # Close the thread
     thread.join()
 
 
@@ -36,12 +38,3 @@ def testing_server():
     (io_loop, thread) = start_testing_server()
     yield
     stop_testing_server(io_loop, thread)
-
-
-@pytest.fixture()
-def peopledb_conn(scope="module"):
-    engine = create_engine(
-        'sqlite:///databases/people.db?check_same_thread=False')
-    conn = engine.connect()
-    yield conn
-    conn.close()
