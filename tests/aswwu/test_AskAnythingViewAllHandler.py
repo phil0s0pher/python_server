@@ -13,7 +13,7 @@ def test_No_Data(testing_server):
     assert (json.loads(resp.text) == expected_data)
 
 
-def test_Data(testing_server, peopledb_conn):
+def test_data(testing_server, peopledb_conn):
     expected_data = [{
         u"votes": 0,
         u"reviewed": True,
@@ -44,7 +44,7 @@ def test_Data(testing_server, peopledb_conn):
         assert (json.loads(resp.text) == expected_data)
 
 
-def test_Data_with_votes(testing_server, peopledb_conn):
+def test_data_with_votes(testing_server, peopledb_conn):
     expected_data = [{
         u"votes": 1,
         u"reviewed": True,

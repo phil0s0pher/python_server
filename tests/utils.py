@@ -2,21 +2,21 @@ from contextlib import contextmanager
 from sqlalchemy import Table, Column, String, MetaData, DateTime, Boolean
 from datetime import datetime
 
-metadata = MetaData()
-askanything_table = Table('askanythings', metadata,
+METADATA = MetaData()
+ASKANYTHING_TABLE = Table('askanythings', METADATA,
                           Column('id', String(50), nullable=False),
                           Column('updated_at', DateTime),
                           Column('question', String(500), nullable=False),
                           Column('reviewed', Boolean),
                           Column('authorized', Boolean))
 
-askanything_vote_table = Table('askanythingvotes', metadata,
+ASKANYTHING_VOTE_TABLE = Table('askanythingvotes', METADATA,
                                Column('id', String(50), nullable=False),
                                Column(
                                    'question_id', String(50), nullable=False),
                                Column('voter', String(75)))
 
-askanythings_data = [{
+ASKANYTHINGS_DATA = [{
     "id": 1,
     "updated_at": datetime.now(),
     "question": "Something",
@@ -36,7 +36,7 @@ askanythings_data = [{
     "authorized": True
 }]
 
-askanythingvotes_data = [{
+ASKANYTHINGVOTES_DATA = [{
     "id": 1,
     "updated_at": datetime.now(),
     "question_id": 1,
@@ -55,14 +55,22 @@ askanythingvotes_data = [{
 
 
 @contextmanager
-def askanything(conn, askanythings=askanythings_data):
-    conn.execute(askanything_table.insert(), askanythings)
+def askanything(conn, askanythings=ASKANYTHINGS_DATA):
+    conn.execute(ASKANYTHING_TABLE.insert(), askanythings)
     yield askanythings
-    conn.execute(askanything_table.delete())
+    conn.execute(ASKANYTHING_TABLE.delete())
 
 
 @contextmanager
-def askanthingvote(conn, askanythingvotes=askanythingvotes_data):
-    conn.execute(askanything_vote_table.insert(), askanythingvotes)
+def askanthingvote(conn, askanythingvotes=ASKANYTHINGVOTES_DATA):
+    conn.execute(ASKANYTHING_VOTE_TABLE.insert(), askanythingvotes)
     yield askanythingvotes
-    conn.execute(askanything_vote_table.delete())
+    conn.execute(ASKANYTHING_VOTE_TABLE.delete())
+
+
+def gen_askanythings(number=5):
+    arr = []
+    for i in number:
+        arr.push({"id": 1, "updated_at": datetime.now(), "question": "Something", "reviewed": True,"authorized": True})
+    
+
