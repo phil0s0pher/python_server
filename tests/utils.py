@@ -71,6 +71,10 @@ def askanthingvote(conn, askanythingvotes=ASKANYTHINGVOTES_DATA):
 def gen_askanythings(number=5):
     arr = []
     for i in number:
-        arr.push({"id": 1, "updated_at": datetime.now(), "question": "Something", "reviewed": True,"authorized": True})
-    
-
+        arr.push({
+            "id": i,
+            "updated_at": datetime.now(),
+            "question": "Something_{}".format(i),
+            "reviewed": True,
+            "authorized": True
+        })
