@@ -3,6 +3,7 @@ from sqlalchemy import Table, Column, String, MetaData, DateTime, Boolean
 from datetime import datetime
 from names import get_first_name, get_last_name
 
+
 METADATA = MetaData()
 ASKANYTHING_TABLE = Table('askanythings', METADATA,
                           Column('id', String(50), nullable=False),
@@ -49,6 +50,7 @@ def edit(generator, changes):
 
 @contextmanager
 def askanything(conn, askanythings=list(gen_askanythings())):
+
     conn.execute(ASKANYTHING_TABLE.insert(), askanythings)
     yield askanythings
     conn.execute(ASKANYTHING_TABLE.delete())
@@ -59,3 +61,4 @@ def askanthingvote(conn, askanythingvotes=list(gen_askanythingvotes())):
     conn.execute(ASKANYTHING_VOTE_TABLE.insert(), askanythingvotes)
     yield askanythingvotes
     conn.execute(ASKANYTHING_VOTE_TABLE.delete())
+
