@@ -3,7 +3,6 @@ import json
 from tests.utils import askanything, askanthingvote, edit, gen_askanythingvotes, gen_askanythings
 
 
-
 def test_No_Data(testing_server):
 
     expected_data = []
@@ -37,8 +36,7 @@ def test_data(testing_server, peopledb_conn):
         "has_voted": False,
         "question_id": "2",
     }]
-    
-    
+
     with askanything(peopledb_conn, list(gen_askanythings(number=3))):
         url = "http://127.0.0.1:8888/askanything/view"
         resp = requests.get(url)
@@ -70,21 +68,23 @@ def test_data_with_votes(testing_server, peopledb_conn):
         "question_id": "2",
     }]
 
-
     data = list(
         edit(
-            gen_askanythingvotes(number=3),
-            {0: {
-                'question_id': 0
-            },
-             1: {
-                 'question_id': 1
-             },
-             2: {
-                 'question_id': 2
-             }}))
+            gen_askanythingvotes(number=3), {
+                0: {
+                    'question_id': 0
+                },
+                1: {
+                    'question_id': 1
+                },
+                2: {
+                    'question_id': 2
+                }
+            }))
 
-    with askanything(peopledb_conn, list(gen_askanythings(number=3))), askanthingvote(peopledb_conn, data):
+    with askanything(
+            peopledb_conn, list(gen_askanythings(number=3))), askanthingvote(
+                peopledb_conn, data):
         url = "http://127.0.0.1:8888/askanything/view"
         resp = requests.get(url)
         assert (resp.status_code == 200)
