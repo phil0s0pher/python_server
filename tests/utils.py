@@ -81,28 +81,34 @@ def edit(generator, changes):
 
 
 @contextmanager
-def askanything(conn, askanythings=list(gen_askanythings())):
+def askanything(conn, askanythings=None):
     """Insert list of records into askanything table
 
     Keyword Arguments:
     conn(conn)               -- A connection object to the database
-    askanythings(list(dict)) -- A list of dicts which are records to be inserted into the db (default list(gen_askanythings()))
+    askanythings(list(dict)) -- Records to be inserted into the db (default None)
 
     """
+    if askanythings is None:
+        askanythings = list(gen_askanythings())
+
     conn.execute(ASKANYTHING_TABLE.insert(), askanythings)
     yield askanythings
     conn.execute(ASKANYTHING_TABLE.delete())
 
 
 @contextmanager
-def askanthingvote(conn, askanythingvotes=list(gen_askanythingvotes())):
+def askanthingvote(conn, askanythingvotes=None):
     """Insert list of records into askanything table
 
     Keyword Arguments:
     conn(conn)                   -- A connection object to the database
-    askanythingvotes(list(dict)) -- A list of dicts which are records to be inserted into the db (default list(gen_askanythingvotes()))
+    askanythingvotes(list(dict)) -- Records to be inserted into the db (default None)
 
     """
+    if askanythingvotes is None:
+        askanythingvotes = list(gen_askanythingvotes())
+
     conn.execute(ASKANYTHING_VOTE_TABLE.insert(), askanythingvotes)
     yield askanythingvotes
     conn.execute(ASKANYTHING_VOTE_TABLE.delete())
