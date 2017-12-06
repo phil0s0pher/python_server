@@ -111,9 +111,42 @@ def test_GET_not_authorized(testing_server, peopledb_conn):
     votes = list(
         edit(
             gen_askanythingvotes(number=3), {
-                0: {'question_id': 0,},
+                0: {'question_id': 0},
                 1: {'question_id': 1},
-                2: {'question_id': 2,}
+                2: {'question_id': 2}
+            }))
+
+    with askanything(peopledb_conn, anythings), askanthingvote(peopledb_conn, votes):
+        url = "http://127.0.0.1:8888/askanything/view"
+        resp = requests.get(url)
+
+    assert (resp.status_code == 200)
+    assert (json.loads(resp.text) == expected_data)
+
+
+def test_GET_no_reviewed(testing_server, peopledb_conn):
+    expected_data = [{
+        "votes": 1,
+        "reviewed": True,
+        "question": "Something_1",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "1",
+    }]
+
+    anythings = list(
+        edit(
+            gen_askanythings(number=3), {
+                0: {'reviewed': False},
+                2: {'reviewed': False}
+            }))
+
+    votes = list(
+        edit(
+            gen_askanythingvotes(number=3), {
+                0: {'question_id': 0},
+                1: {'question_id': 1},
+                2: {'question_id': 2}
             }))
 
     with askanything(peopledb_conn, anythings), askanthingvote(peopledb_conn, votes):
